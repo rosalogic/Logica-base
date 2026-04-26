@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz de Lógica</title>
+  <title>Lógica Interativa</title>
 
   <style>
     body {
@@ -18,91 +18,152 @@
 
     .card {
       background: rgba(30, 41, 59, 0.9);
-      max-width: 500px;
-      margin: 30px auto;
+      max-width: 600px;
+      margin: 20px auto;
       padding: 20px;
       border-radius: 10px;
     }
 
-    button {
+    button, select {
       margin: 5px;
       padding: 10px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+    }
+
+    button {
       background: #38bdf8;
+      color: black;
     }
 
     .result {
-      margin-top: 15px;
+      margin-top: 10px;
       font-size: 18px;
       font-weight: bold;
     }
 
-    .score {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #a5f3fc;
+    .small {
+      font-size: 14px;
+      color: #cbd5e1;
     }
   </style>
 </head>
 
 <body>
 
+<h1>🔢 Lógica AND / OR / NOT</h1>
+
+<!-- EXPLICAÇÃO -->
 <div class="card">
-  <h1>Quiz de Lógica</h1>
+  <h2>📚 Conceitos</h2>
 
-  <div class="score">
-    Pontuação: <span id="score">0</span>
-  </div>
+  <p><b>AND (E)</b>: só é V quando tudo é V</p>
+  <p><b>OR (OU)</b>: é V se pelo menos um for V</p>
+  <p><b>NOT (NÃO)</b>: inverte V ↔ F</p>
+</div>
 
-  <h2 id="question">Carregando...</h2>
+<!-- CALCULADORA -->
+<div class="card">
+  <h2>🧮 Calculadora lógica</h2>
 
-  <button onclick="answer(true)">Verdadeiro</button>
-  <button onclick="answer(false)">Falso</button>
+  <select id="v1">
+    <option value="V">V</option>
+    <option value="F">F</option>
+  </select>
 
-  <div id="result" class="result"></div>
+  <select id="op">
+    <option value="AND">AND</option>
+    <option value="OR">OR</option>
+  </select>
+
+  <select id="v2">
+    <option value="V">V</option>
+    <option value="F">F</option>
+  </select>
 
   <br>
-  <button onclick="nextQuestion()">Próxima pergunta</button>
+
+  <button onclick="calc()">Calcular</button>
+
+  <div id="calcResult" class="result"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="card">
+  <h2>🎮 Quiz</h2>
+
+  <p id="question">Carregando...</p>
+
+  <button onclick="answer('V')">Sim (V)</button>
+  <button onclick="answer('F')">Não (F)</button>
+
+  <div id="quizResult" class="result"></div>
+
+  <p class="small">Pontuação: <span id="score">0</span></p>
+
+  <button onclick="next()">Próxima</button>
 </div>
 
 <script>
+
+  // ---------------- CALCULADORA ----------------
+  function calc() {
+    let a = document.getElementById("v1").value;
+    let b = document.getElementById("v2").value;
+    let op = document.getElementById("op").value;
+
+    let A = a === "V";
+    let B = b === "V";
+    let result;
+
+    if (op === "AND") {
+      result = A && B;
+    } else {
+      result = A || B;
+    }
+
+    document.getElementById("calcResult").innerText =
+      `${a} ${op} ${b} = ${result ? "V" : "F"}`;
+  }
+
+  // ---------------- QUIZ ----------------
   let score = 0;
-  let currentAnswer = false;
+  let currentAnswer = "V";
 
   const questions = [
-    { text: "TRUE AND FALSE é TRUE?", answer: false },
-    { text: "TRUE OR FALSE é TRUE?", answer: true },
-    { text: "NOT TRUE é FALSE?", answer: true },
-    { text: "TRUE AND TRUE é TRUE?", answer: true },
-    { text: "FALSE OR FALSE é TRUE?", answer: false }
+    { text: "V AND F = ?", answer: "F" },
+    { text: "V OR F = ?", answer: "V" },
+    { text: "NOT V = ?", answer: "F" },
+    { text: "V AND V = ?", answer: "V" },
+    { text: "F OR F = ?", answer: "F" }
   ];
 
-  function loadQuestion() {
+  function load() {
     let q = questions[Math.floor(Math.random() * questions.length)];
     document.getElementById("question").innerText = q.text;
     currentAnswer = q.answer;
-    document.getElementById("result").innerText = "";
+    document.getElementById("quizResult").innerText = "";
   }
 
-  function answer(userAnswer) {
-    if (userAnswer === currentAnswer) {
-      document.getElementById("result").innerText = "✔ Correto!";
+  function answer(val) {
+    if (val === currentAnswer) {
+      document.getElementById("quizResult").innerText = "✔ Correto!";
       score++;
     } else {
-      document.getElementById("result").innerText = "❌ Errado!";
+      document.getElementById("quizResult").innerText = "❌ Errado!";
     }
 
     document.getElementById("score").innerText = score;
   }
 
-  function nextQuestion() {
-    loadQuestion();
+  function next() {
+    load();
   }
 
-  loadQuestion();
+  load();
+
 </script>
 
 </body>
