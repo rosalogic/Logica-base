@@ -2,179 +2,107 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Lógica AND, OR, NOT</title>
+  <title>Quiz de Lógica</title>
 
   <style>
     body {
+      background-image: url("https://tse1.mm.bing.net/th/id/OIP.Gnsw_nYAdD87njX6CPchwQHaD4?rs=1&pid=ImgDetMain&o=7&rm=3");
+      background-size: cover;
+      background-position: center;
       font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
       text-align: center;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-bottom: 10px;
+      color: white;
+      margin: 0;
+      padding: 0;
     }
 
     .card {
-      background: #1e293b;
-      padding: 15px;
-      margin: 10px auto;
-      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.9);
       max-width: 500px;
-    }
-
-    button, select {
-      margin: 5px;
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     button {
-      background: #38bdf8;
-      color: black;
+      margin: 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-weight: bold;
+      background: #38bdf8;
     }
 
     .result {
-      margin-top: 10px;
+      margin-top: 15px;
       font-size: 18px;
       font-weight: bold;
     }
 
-    .steps {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #94a3b8;
-      text-align: left;
+    .score {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #a5f3fc;
     }
   </style>
 </head>
 
 <body>
 
-<h1>Operações Lógicas</h1>
-<p>Aprenda AND, OR e NOT de forma interativa</p>
-
-<!-- AND -->
 <div class="card">
-  <h2>AND</h2>
-  <p>Verdadeiro apenas se ambos forem verdadeiros</p>
+  <h1>Quiz de Lógica</h1>
 
-  <button onclick="testAND(true, true)">V & V</button>
-  <button onclick="testAND(true, false)">V & F</button>
-  <button onclick="testAND(false, true)">F & V</button>
-  <button onclick="testAND(false, false)">F & F</button>
+  <div class="score">
+    Pontuação: <span id="score">0</span>
+  </div>
 
-  <div id="andResult" class="result"></div>
-</div>
+  <h2 id="question">Carregando...</h2>
 
-<!-- OR -->
-<div class="card">
-  <h2>OR</h2>
-  <p>Verdadeiro se pelo menos um for verdadeiro</p>
+  <button onclick="answer(true)">Verdadeiro</button>
+  <button onclick="answer(false)">Falso</button>
 
-  <button onclick="testOR(true, true)">V | V</button>
-  <button onclick="testOR(true, false)">V | F</button>
-  <button onclick="testOR(false, true)">F | V</button>
-  <button onclick="testOR(false, false)">F | F</button>
-
-  <div id="orResult" class="result"></div>
-</div>
-
-<!-- NOT -->
-<div class="card">
-  <h2>NOT</h2>
-  <p>Inverte o valor</p>
-
-  <button onclick="testNOT(true)">NOT V</button>
-  <button onclick="testNOT(false)">NOT F</button>
-
-  <div id="notResult" class="result"></div>
-</div>
-
-<!-- EXPRESSÃO PERSONALIZADA -->
-<div class="card">
-  <h2>Monte sua expressão</h2>
-
-  <select id="value1">
-    <option value="true">Verdadeiro</option>
-    <option value="false">Falso</option>
-  </select>
-
-  <select id="operator">
-    <option value="AND">AND</option>
-    <option value="OR">OR</option>
-  </select>
-
-  <select id="value2">
-    <option value="true">Verdadeiro</option>
-    <option value="false">Falso</option>
-  </select>
+  <div id="result" class="result"></div>
 
   <br>
-
-  <button onclick="calculate()">Calcular</button>
-
-  <div id="customResult" class="result"></div>
-  <div id="steps" class="steps"></div>
+  <button onclick="nextQuestion()">Próxima pergunta</button>
 </div>
 
 <script>
-  // AND
-  function testAND(a, b) {
-    let result = a && b;
-    document.getElementById("andResult").innerText =
-      `${a} AND ${b} = ${result}`;
+  let score = 0;
+  let currentAnswer = false;
+
+  const questions = [
+    { text: "TRUE AND FALSE é TRUE?", answer: false },
+    { text: "TRUE OR FALSE é TRUE?", answer: true },
+    { text: "NOT TRUE é FALSE?", answer: true },
+    { text: "TRUE AND TRUE é TRUE?", answer: true },
+    { text: "FALSE OR FALSE é TRUE?", answer: false }
+  ];
+
+  function loadQuestion() {
+    let q = questions[Math.floor(Math.random() * questions.length)];
+    document.getElementById("question").innerText = q.text;
+    currentAnswer = q.answer;
+    document.getElementById("result").innerText = "";
   }
 
-  // OR
-  function testOR(a, b) {
-    let result = a || b;
-    document.getElementById("orResult").innerText =
-      `${a} OR ${b} = ${result}`;
-  }
-
-  // NOT
-  function testNOT(a) {
-    let result = !a;
-    document.getElementById("notResult").innerText =
-      `NOT ${a} = ${result}`;
-  }
-
-  // EXPRESSÃO PERSONALIZADA
-  function calculate() {
-    let v1 = document.getElementById("value1").value === "true";
-    let v2 = document.getElementById("value2").value === "true";
-    let op = document.getElementById("operator").value;
-
-    let result;
-    let explanation = "";
-
-    if (op === "AND") {
-      result = v1 && v2;
-      explanation = `
-        Passo 1: ${v1} AND ${v2}<br>
-        Passo 2: AND só é verdadeiro se ambos forem verdadeiros<br>
-        Resultado: ${result}
-      `;
-    } else if (op === "OR") {
-      result = v1 || v2;
-      explanation = `
-        Passo 1: ${v1} OR ${v2}<br>
-        Passo 2: OR é verdadeiro se pelo menos um for verdadeiro<br>
-        Resultado: ${result}
-      `;
+  function answer(userAnswer) {
+    if (userAnswer === currentAnswer) {
+      document.getElementById("result").innerText = "✔ Correto!";
+      score++;
+    } else {
+      document.getElementById("result").innerText = "❌ Errado!";
     }
 
-    document.getElementById("customResult").innerText =
-      `Resultado: ${result}`;
-
-    document.getElementById("steps").innerHTML = explanation;
+    document.getElementById("score").innerText = score;
   }
+
+  function nextQuestion() {
+    loadQuestion();
+  }
+
+  loadQuestion();
 </script>
 
 </body>
