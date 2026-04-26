@@ -20,6 +20,14 @@
       padding: 20px;
     }
 
+    .hero-img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
     .card {
       background: rgba(255,255,255,0.06);
       padding: 20px;
@@ -62,20 +70,39 @@
 
 <div class="container">
 
-  <h1>🧠 Lógica Booleana Explicada</h1>
+  <h1>🧠 Lógica Booleana Interativa</h1>
+
+  <!-- IMAGEM ADICIONADA -->
+  <img class="hero-img"
+       src="https://tse1.mm.bing.net/th/id/OIP.WySCVrQBIIjcZ_ErDcdVBgHaEb?rs=1&pid=ImgDetMain&o=7&rm=3"
+       alt="Lógica visual">
 
   <!-- TEORIA -->
   <div class="card">
     <h2>📚 Conceitos</h2>
 
-    <p><b>AND (E)</b> → só é verdadeiro se os dois forem verdadeiros.</p>
-    <p class="small">Ex: V AND V = V | qualquer outra combinação = F</p>
+    <p><b>AND (E)</b> → só resulta em verdadeiro quando as duas condições são verdadeiras ao mesmo tempo.</p>
+    <p class="small">
+      Exemplos:<br>
+      V AND V = V<br>
+      V AND F = F<br>
+      F AND F = F
+    </p>
 
-    <p><b>OR (OU)</b> → é verdadeiro se pelo menos um for verdadeiro.</p>
-    <p class="small">Ex: V OR F = V | só F OR F = F</p>
+    <p><b>OR (OU)</b> → resulta em verdadeiro quando pelo menos uma condição é verdadeira.</p>
+    <p class="small">
+      Exemplos:<br>
+      V OR V = V<br>
+      V OR F = V<br>
+      F OR F = F
+    </p>
 
-    <p><b>NOT (NÃO)</b> → inverte o valor lógico.</p>
-    <p class="small">Ex: NOT V = F | NOT F = V</p>
+    <p><b>NOT (NÃO)</b> → inverte o valor lógico da expressão.</p>
+    <p class="small">
+      Exemplos:<br>
+      NOT V = F<br>
+      NOT F = V
+    </p>
   </div>
 
   <!-- CALCULADORA -->
@@ -124,7 +151,7 @@
 
 <script>
 
-  // ---------------- CALCULADORA ----------------
+  // CALCULADORA
   function calc() {
     let a = document.getElementById("a").value === "V";
     let b = document.getElementById("b").value === "V";
@@ -136,7 +163,7 @@
       `Resultado: ${result ? "V" : "F"}`;
   }
 
-  // ---------------- QUIZ ----------------
+  // QUIZ
   let score = 0;
   let currentAnswer = "sim";
 
