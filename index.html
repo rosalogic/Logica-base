@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Lógica Interativa V2</title>
+  <title>Lógica Interativa Completa</title>
 
   <style>
     body {
@@ -14,22 +14,17 @@
       padding: 0;
     }
 
-    h1 {
-      margin-top: 20px;
-    }
-
     .container {
-      max-width: 700px;
+      max-width: 750px;
       margin: auto;
       padding: 20px;
     }
 
     .card {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.06);
       padding: 20px;
       margin: 15px 0;
       border-radius: 12px;
-      backdrop-filter: blur(5px);
     }
 
     button, select {
@@ -55,6 +50,11 @@
     .score {
       color: #a5f3fc;
     }
+
+    .small {
+      font-size: 14px;
+      color: #cbd5e1;
+    }
   </style>
 </head>
 
@@ -62,19 +62,25 @@
 
 <div class="container">
 
-  <h1>🔢 Lógica Booleana Interativa</h1>
+  <h1>🧠 Lógica Booleana Explicada</h1>
 
   <!-- TEORIA -->
   <div class="card">
     <h2>📚 Conceitos</h2>
-    <p><b>AND</b> → só V se tudo for V</p>
-    <p><b>OR</b> → V se pelo menos um for V</p>
-    <p><b>NOT</b> → inverte V ↔ F</p>
+
+    <p><b>AND (E)</b> → só é verdadeiro se os dois forem verdadeiros.</p>
+    <p class="small">Ex: V AND V = V | qualquer outra combinação = F</p>
+
+    <p><b>OR (OU)</b> → é verdadeiro se pelo menos um for verdadeiro.</p>
+    <p class="small">Ex: V OR F = V | só F OR F = F</p>
+
+    <p><b>NOT (NÃO)</b> → inverte o valor lógico.</p>
+    <p class="small">Ex: NOT V = F | NOT F = V</p>
   </div>
 
   <!-- CALCULADORA -->
   <div class="card">
-    <h2>🧮 Calculadora</h2>
+    <h2>🧮 Calculadora lógica</h2>
 
     <select id="a">
       <option value="V">V</option>
@@ -100,12 +106,12 @@
 
   <!-- QUIZ -->
   <div class="card">
-    <h2>🎮 Quiz</h2>
+    <h2>🎮 Quiz de Lógica</h2>
 
-    <p id="question">...</p>
+    <p id="question">Carregando...</p>
 
-    <button onclick="answer('V')">Sim (V)</button>
-    <button onclick="answer('F')">Não (F)</button>
+    <button onclick="answer('sim')">Sim</button>
+    <button onclick="answer('nao')">Não</button>
 
     <div id="quizResult" class="result"></div>
 
@@ -132,25 +138,26 @@
 
   // ---------------- QUIZ ----------------
   let score = 0;
-  let correct = "V";
+  let currentAnswer = "sim";
 
   const questions = [
-    { q: "V AND F = ?", a: "F" },
-    { q: "V OR F = ?", a: "V" },
-    { q: "NOT V = ?", a: "F" },
-    { q: "F OR F = ?", a: "F" },
-    { q: "V AND V = ?", a: "V" }
+    { q: "F e F é falso?", a: "sim" },
+    { q: "V e F é verdadeiro?", a: "nao" },
+    { q: "V ou F é verdadeiro?", a: "sim" },
+    { q: "Não V é verdadeiro?", a: "nao" },
+    { q: "V e V é verdadeiro?", a: "sim" },
+    { q: "F ou F é verdadeiro?", a: "nao" }
   ];
 
   function load() {
     let q = questions[Math.floor(Math.random() * questions.length)];
     document.getElementById("question").innerText = q.q;
-    correct = q.a;
+    currentAnswer = q.a;
     document.getElementById("quizResult").innerText = "";
   }
 
-  function answer(val) {
-    if (val === correct) {
+  function answer(user) {
+    if (user === currentAnswer) {
       document.getElementById("quizResult").innerText = "✔ Correto!";
       score++;
     } else {
